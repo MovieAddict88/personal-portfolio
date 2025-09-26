@@ -70,6 +70,7 @@ try {
     <ul>
         <li><a href="dashboard.php">Dashboard</a></li>
         <li><a href="edit-about.php">About Me</a></li>
+        <li><a href="edit-education.php">Education</a></li>
         <li><a href="edit-experience.php">Experience</a></li>
         <li><a href="edit-skills.php">Skills</a></li>
         <li><a href="edit-projects.php">Projects</a></li>

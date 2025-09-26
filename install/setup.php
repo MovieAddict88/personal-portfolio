@@ -55,11 +55,18 @@ try {
       `photo_url` VARCHAR(255),
       `tagline` VARCHAR(255),
       `bio` TEXT,
-      `education` TEXT,
       `philosophy` TEXT,
       `email` VARCHAR(100),
       `linkedin_url` VARCHAR(255),
       `phone` VARCHAR(50)
+    );
+
+    CREATE TABLE IF NOT EXISTS `education` (
+      `id` INT AUTO_INCREMENT PRIMARY KEY,
+      `degree` VARCHAR(255) NOT NULL,
+      `institution` VARCHAR(255) NOT NULL,
+      `start_year` VARCHAR(4),
+      `end_year` VARCHAR(10)
     );
 
     CREATE TABLE IF NOT EXISTS `skills` (
@@ -114,20 +121,28 @@ try {
     $stmt->execute([$admin_user, $admin_pass, 1]);
 
     // 2. About Me
-    $stmt = $pdo->prepare('INSERT INTO about_me (name, photo_url, tagline, bio, education, philosophy, email, linkedin_url, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO about_me (name, photo_url, tagline, bio, philosophy, email, linkedin_url, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
     $stmt->execute([
         'Ms. Jane Doe',
         'assets/placeholder-teacher.jpg',
         'Inspiring young minds through creativity and patience',
         'I am a passionate educator with a love for early childhood learning. My goal is to create engaging, inclusive, and supportive environments where students thrive.',
-        'Bachelor of Elementary Education – University of Example (2022)',
         'Every child learns differently, and it is my duty to adapt to their unique strengths and challenges.',
         'janedoe@email.com',
         'https://linkedin.com/in/janedoe',
         '+63 912 345 6789'
     ]);
 
-    // 3. Skills
+    // 3. Education
+    $education = [
+        ['Bachelor of Elementary Education', 'University of Example', '2018', '2022']
+    ];
+    $stmt = $pdo->prepare('INSERT INTO education (degree, institution, start_year, end_year) VALUES (?, ?, ?, ?)');
+    foreach ($education as $edu) {
+        $stmt->execute($edu);
+    }
+
+    // 4. Skills
     $skills = [
         ['Classroom Management', 4, 'Teaching'],
         ['Lesson Planning', 5, 'Teaching'],
