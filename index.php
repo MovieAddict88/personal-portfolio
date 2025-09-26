@@ -14,6 +14,10 @@ try {
     $exp_stmt = $pdo->query('SELECT * FROM experience ORDER BY start_year DESC');
     $experiences = $exp_stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Fetch Education data
+    $edu_stmt = $pdo->query('SELECT * FROM education ORDER BY start_year DESC');
+    $educations = $edu_stmt->fetchAll(PDO::FETCH_ASSOC);
+
     // Fetch Skills data
     $skills_stmt = $pdo->query('SELECT * FROM skills ORDER BY category, level DESC');
     $skills = $skills_stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,8 +44,26 @@ try {
     <!-- Header / Home Section -->
     <header id="home">
         <div class="container">
-            <h1><?php echo htmlspecialchars($about['name'] ?? 'Jane Doe'); ?></h1>
-            <p><?php echo htmlspecialchars($about['tagline'] ?? 'Inspiring the next generation.'); ?></p>
+            <nav>
+                <div class="logo"><?php echo htmlspecialchars($about['name'] ?? 'Portfolio'); ?></div>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </nav>
+            <div class="header-content">
+                <h1><?php echo htmlspecialchars($about['name'] ?? 'Jane Doe'); ?></h1>
+                <p><?php echo htmlspecialchars($about['tagline'] ?? 'Inspiring the next generation.'); ?></p>
+            </div>
         </div>
     </header>
 
@@ -49,14 +71,34 @@ try {
         <!-- About Me Section -->
         <section id="about" class="section">
             <h2>About Me</h2>
-            <?php if (!empty($about['photo_url'])): ?>
-                <img src="<?php echo htmlspecialchars($about['photo_url']); ?>" alt="Photo of <?php echo htmlspecialchars($about['name']); ?>">
-            <?php endif; ?>
-            <p><?php echo nl2br(htmlspecialchars($about['bio'] ?? '')); ?></p>
-            <h3>Education</h3>
-            <p><?php echo htmlspecialchars($about['education'] ?? ''); ?></p>
-            <h3>My Philosophy</h3>
-            <p><?php echo htmlspecialchars($about['philosophy'] ?? ''); ?></p>
+            <div class="about-content">
+                <div class="about-image">
+                    <?php if (!empty($about['photo_url'])): ?>
+                        <img src="<?php echo htmlspecialchars($about['photo_url']); ?>" alt="Photo of <?php echo htmlspecialchars($about['name']); ?>">
+                    <?php endif; ?>
+                </div>
+                <div class="about-text">
+                    <p><?php echo nl2br(htmlspecialchars($about['bio'] ?? '')); ?></p>
+                    <h3>My Philosophy</h3>
+                    <p><?php echo htmlspecialchars($about['philosophy'] ?? ''); ?></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="section">
+            <h2>Education</h2>
+            <ul class="timeline">
+                <?php foreach ($educations as $edu): ?>
+                <li class="timeline-item">
+                    <div class="year"><?php echo htmlspecialchars($edu['start_year']); ?> - <?php echo htmlspecialchars($edu['end_year']); ?></div>
+                    <div class="timeline-content">
+                        <h3><?php echo htmlspecialchars($edu['degree']); ?></h3>
+                        <h4><?php echo htmlspecialchars($edu['institution']); ?></h4>
+                    </div>
+                </li>
+                <?php endforeach; ?>
+            </ul>
         </section>
 
         <!-- Experience Section -->
@@ -124,5 +166,6 @@ try {
         <p>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($about['name'] ?? 'Portfolio'); ?>. All Rights Reserved.</p>
     </footer>
 
+    <script src="public/main.js"></script>
 </body>
 </html>
